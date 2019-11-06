@@ -3,7 +3,7 @@ import Mixin from '@ember/object/mixin';
 import { assert } from '@ember/debug';
 import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
-import isFastBootCPM, { isFastBoot } from '../utils/is-fastboot';
+import isFastBoot from '../utils/is-fastboot';
 
 /**
  * If the user is unauthenticated, invoke `callback`
@@ -66,8 +66,6 @@ export default Mixin.create({
     return owner.lookup('service:router') || owner.lookup('router:main');
   }),
 
-  _isFastBoot: isFastBootCPM(),
-
   /**
     The route to transition to for authentication. The
     {{#crossLink "AuthenticatedRouteMixin"}}{{/crossLink}} will transition to
@@ -80,6 +78,12 @@ export default Mixin.create({
     @public
   */
   authenticationRoute: 'login',
+
+  init() {
+    this._super(...arguments);
+
+    this._isFastBoot = this.hasOwnProperty('_isFastBoot') ? this._isFastBoot : isFastBoot(this.owner);
+  },
 
   /**
     Checks whether the session is authenticated and if it is not aborts the

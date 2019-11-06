@@ -48,8 +48,6 @@ export default Mixin.create({
   */
   session: service('session'),
 
-  _isFastBoot: isFastBoot(),
-
   /**
     The route to transition to if a route that implements the
     {{#crossLink "UnauthenticatedRouteMixin"}}{{/crossLink}} is accessed when
@@ -61,6 +59,12 @@ export default Mixin.create({
     @public
   */
   routeIfAlreadyAuthenticated: 'index',
+
+  init() {
+    this._super(...arguments);
+
+    this._isFastBoot = this.hasOwnProperty('_isFastBoot') ? this._isFastBoot : isFastBoot(this.owner);
+  },
 
   /**
     Checks whether the session is authenticated and if it is aborts the current

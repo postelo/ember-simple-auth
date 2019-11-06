@@ -329,7 +329,7 @@ export default BaseAuthenticator.extend({
   },
 
   _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
-    const refreshAccessTokens = this.get('refreshAccessTokens') && !isFastBoot();
+    const refreshAccessTokens = this.get('refreshAccessTokens') && !isFastBoot(this.owner);
     if (refreshAccessTokens) {
       const now = (new Date()).getTime();
       if (isEmpty(expiresAt) && !isEmpty(expiresIn)) {

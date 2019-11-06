@@ -22,8 +22,6 @@ import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
   @public
 */
 export default BaseStore.extend({
-  _isFastBoot: isFastBoot(),
-
   /**
     The `sessionStorage` key the store persists data in.
 
@@ -37,6 +35,7 @@ export default BaseStore.extend({
   init() {
     this._super(...arguments);
 
+    this._isFastBoot = this.hasOwnProperty('_isFastBoot') ? this._isFastBoot : isFastBoot(this.owner);
     if (!this.get('_isFastBoot')) {
       window.addEventListener('storage', bind(this, this._handleStorageEvent));
     }

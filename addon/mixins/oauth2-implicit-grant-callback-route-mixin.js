@@ -1,7 +1,7 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 import location from '../utils/location';
-import isFastBootCPM from '../utils/is-fastboot';
+import isFastBoot from '../utils/is-fastboot';
 
 function _parseResponse(locationHash) {
   let params = {};
@@ -67,6 +67,12 @@ export default Mixin.create({
   */
   error: null,
 
+  init() {
+    this._super(...arguments);
+
+    this._isFastBoot = this.hasOwnProperty('_isFastBoot') ? this._isFastBoot : isFastBoot(this.owner);
+  },
+
   /**
     Passes the hash received with the redirection from the authentication
     server to the
@@ -89,6 +95,4 @@ export default Mixin.create({
       this.set('error', err);
     });
   },
-
-  _isFastBoot: isFastBootCPM()
 });
