@@ -2,7 +2,6 @@ import { Promise } from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
 import { merge, assign as emberAssign } from '@ember/polyfills';
-import { computed } from '@ember/object';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
 
@@ -68,40 +67,6 @@ export default BaseAuthenticator.extend({
   identificationAttributeName: 'email',
 
   /**
-    When authentication fails, the rejection callback is provided with the whole
-    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
-    instead of its responseJSON or responseText.
-
-    This is useful for cases when the backend provides additional context not
-    available in the response body.
-
-    @property rejectWithXhr
-    @type Boolean
-    @default false
-    @deprecated DeviseAuthenticator/rejectWithResponse:property
-    @public
-  */
-  rejectWithXhr: computed.deprecatingAlias('rejectWithResponse', {
-    id: `ember-simple-auth.authenticator.reject-with-xhr`,
-    until: '2.0.0'
-  }),
-
-  /**
-    When authentication fails, the rejection callback is provided with the whole
-    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
-    instead of its responseJSON or responseText.
-
-    This is useful for cases when the backend provides additional context not
-    available in the response body.
-
-    @property rejectWithResponse
-    @type Boolean
-    @default false
-    @public
-  */
-  rejectWithResponse: false,
-
-  /**
     Restores the session from a session data object; __returns a resolving
     promise when there are non-empty
     {{#crossLink "DeviseAuthenticator/tokenAttributeName:property"}}token{{/crossLink}}
@@ -139,7 +104,6 @@ export default BaseAuthenticator.extend({
   */
   authenticate(identification, password) {
     return new Promise((resolve, reject) => {
-      const useResponse = this.get('rejectWithResponse');
       const { resourceName, identificationAttributeName, tokenAttributeName } = this.getProperties('resourceName', 'identificationAttributeName', 'tokenAttributeName');
       const data = {};
       data[resourceName] = { password };
@@ -157,11 +121,7 @@ export default BaseAuthenticator.extend({
             }
           });
         } else {
-          if (useResponse) {
-            run(null, reject, response);
-          } else {
-            response.json().then((json) => run(null, reject, json));
-          }
+          run(null, reject, response);
         }
       }).catch((error) => run(null, reject, error));
     });

@@ -3,7 +3,6 @@ import { isEmpty, isNone } from '@ember/utils';
 import ObjectProxy from '@ember/object/proxy';
 import Evented from '@ember/object/evented';
 import { merge, assign as emberAssign } from '@ember/polyfills';
-import { deprecate } from '@ember/application/deprecations';
 import { set } from '@ember/object';
 import { debug, assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
@@ -49,7 +48,7 @@ export default ObjectProxy.extend(Evented, {
 
     let authenticator = this._lookupAuthenticator(this.authenticator);
     return authenticator.invalidate(this.content.authenticated, ...arguments).then(() => {
-      authenticator.off('sessionDataUpdated');
+      authenticator.off('sessionDataUpdated', this, this._onSessionDataUpdated);
       this._busy = false;
       return this._clear(true);
     }, (error) => {
@@ -63,7 +62,7 @@ export default ObjectProxy.extend(Evented, {
     this._busy = true;
     const reject = () => RSVP.Promise.reject();
 
-    return this._callStoreAsync('restore').then((restoredContent) => {
+    return this.store.restore().then((restoredContent) => {
       let { authenticator: authenticatorFactory } = restoredContent.authenticated || {};
       if (authenticatorFactory) {
         delete restoredContent.authenticated.authenticator;
@@ -89,20 +88,6 @@ export default ObjectProxy.extend(Evented, {
       this._busy = false;
       return this._clear().then(reject, reject);
     });
-  },
-
-  _callStoreAsync(method, ...params) {
-    const result = this.store[method](...params);
-
-    if (typeof result === 'undefined' || typeof result.then === 'undefined') {
-      deprecate(`Ember Simple Auth: Synchronous stores have been deprecated. Make sure your custom store's ${method} method returns a promise.`, false, {
-        id: `ember-simple-auth.session-store.synchronous-${method}`,
-        until: '2.0.0'
-      });
-      return RSVP.Promise.resolve(result);
-    } else {
-      return result;
-    }
   },
 
   _setup(authenticator, authenticatedContent, trigger) {
@@ -162,19 +147,21 @@ export default ObjectProxy.extend(Evented, {
     if (!isEmpty(this.authenticator)) {
       set(data, 'authenticated', assign({ authenticator: this.authenticator }, data.authenticated || {}));
     }
-    return this._callStoreAsync('persist', data);
+    return this.store.persist(data);
   },
 
   _bindToAuthenticatorEvents() {
     const authenticator = this._lookupAuthenticator(this.authenticator);
-    authenticator.off('sessionDataUpdated');
-    authenticator.off('sessionDataInvalidated');
-    authenticator.on('sessionDataUpdated', (content) => {
-      this._setup(this.authenticator, content);
-    });
-    authenticator.on('sessionDataInvalidated', () => {
-      this._clear(true);
-    });
+    authenticator.on('sessionDataUpdated', this, this._onSessionDataUpdated);
+    authenticator.on('sessionDataInvalidated', this, this._onSessionDataInvalidated);
+  },
+
+  _onSessionDataUpdated(content) {
+    this._setup(this.authenticator, content);
+  },
+
+  _onSessionDataInvalidated() {
+    this._clear(true);
   },
 
   _bindToStoreEvents() {

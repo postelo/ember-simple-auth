@@ -1,23 +1,29 @@
 import Mixin from '@ember/object/mixin';
+import { setOwner } from '@ember/application';
 import RSVP from 'rsvp';
 import Route from '@ember/routing/route';
+import Service from '@ember/service';
 import { describe, beforeEach, it } from 'mocha';
+import { setupTest } from 'ember-mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import InternalSession from 'ember-simple-auth/internal-session';
-import Configuration from 'ember-simple-auth/configuration';
-import EphemeralStore from 'ember-simple-auth/session-stores/ephemeral';
-
-import createWithContainer from '../../helpers/create-with-container';
 
 describe('AuthenticatedRouteMixin', () => {
+  setupTest();
+
+  let sinon;
   let route;
-  let session;
+  let router;
   let transition;
-  let cookiesMock;
-  let fastbootMock;
-  let containerMock;
+
+  beforeEach(function() {
+    sinon = sinonjs.createSandbox();
+  });
+
+  afterEach(function() {
+    sinon.restore();
+  });
 
   describe('#beforeModel', function() {
     beforeEach(function() {
@@ -27,52 +33,41 @@ describe('AuthenticatedRouteMixin', () => {
         }
       });
 
-      session = InternalSession.create({ store: EphemeralStore.create() });
+      router = { transitionTo() {} };
       transition = {
         intent: {
           url: '/transition/target/url'
         },
         send() {}
       };
-      cookiesMock = {
-        write: sinon.stub()
-      };
-      fastbootMock = {
-        get: sinon.stub()
-      };
-      containerMock = {
-        lookup: sinon.stub()
-      };
 
-      containerMock.lookup.withArgs('service:cookies').returns(cookiesMock);
-      containerMock.lookup.withArgs('service:fastboot').returns(fastbootMock);
+      this.owner.register('service:session', Service.extend());
 
-      route = createWithContainer(Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin, {
-        // pretend this is never FastBoot
-        _isFastBoot: false,
-        // replace actual transitionTo as the router isn't set up etc.
-        transitionTo() {}
-      }), { session }, containerMock);
+      route = Route.extend(MixinImplementingBeforeModel, AuthenticatedRouteMixin).create({
+        _authRouter: router
+      });
+      setOwner(route, this.owner);
 
       sinon.spy(transition, 'send');
-      sinon.spy(route, 'transitionTo');
+      sinon.spy(router, 'transitionTo');
     });
 
     describe('if the session is authenticated', function() {
       beforeEach(function() {
+        let session = this.owner.lookup('service:session');
         session.set('isAuthenticated', true);
       });
 
-      it('returns the upstream promise', function() {
-        return route.beforeModel(transition).then((result) => {
-          expect(result).to.equal('upstreamReturnValue');
-        });
+      it('returns the upstream promise', async function() {
+        let result = await route.beforeModel(transition);
+
+        expect(result).to.equal('upstreamReturnValue');
       });
 
       it('does not transition to the authentication route', function() {
         route.beforeModel(transition);
 
-        expect(route.transitionTo).to.not.have.been.calledWith(Configuration.authenticationRoute);
+        expect(route._authRouter.transitionTo).to.not.have.been.calledWith('login');
       });
     });
 
@@ -81,25 +76,35 @@ describe('AuthenticatedRouteMixin', () => {
         expect(route.beforeModel(transition)).to.be.undefined;
       });
 
-      it('transitions to the authentication route', function() {
+      it('transitions to "login" as the default authentication route', function() {
+        route.beforeModel(transition);
+        expect(route._authRouter.transitionTo).to.have.been.calledWith('login');
+      });
+
+      it('transitions to the set authentication route', function() {
         let authenticationRoute = 'path/to/route';
         route.set('authenticationRoute', authenticationRoute);
 
         route.beforeModel(transition);
-        expect(route.transitionTo).to.have.been.calledWith(authenticationRoute);
+        expect(route._authRouter.transitionTo).to.have.been.calledWith(authenticationRoute);
       });
 
       it('sets the redirectTarget cookie in fastboot', function() {
-        fastbootMock.get.withArgs('request.protocol').returns('https');
+        this.owner.register('service:fastboot', Service.extend({
+          request: {
+            protocol: 'https'
+          },
+          isFastBoot: true
+        }));
+        let writeCookieStub = sinon.stub();
+        this.owner.register('service:cookies', Service.extend({
+          write: writeCookieStub
+        }));
 
         let cookieName = 'ember_simple_auth-redirectTarget';
 
-        route.reopen({
-          _isFastBoot: true
-        });
-
         route.beforeModel(transition);
-        expect(cookiesMock.write).to.have.been.calledWith(cookieName, transition.intent.url, {
+        expect(writeCookieStub).to.have.been.calledWith(cookieName, transition.intent.url, {
           path: '/',
           secure: true
         });

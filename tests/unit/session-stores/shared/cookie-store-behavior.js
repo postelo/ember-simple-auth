@@ -7,7 +7,7 @@ import {
   it
 } from 'mocha';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinonjs from 'sinon';
 import FakeCookieService from '../../../helpers/fake-cookie-service';
 
 let warnings;
@@ -22,6 +22,7 @@ registerWarnHandler((message, options, next) => {
 });
 
 export default function(options) {
+  let sinon;
   let store;
   let createStore;
   let renew;
@@ -31,6 +32,7 @@ export default function(options) {
 
   // eslint-disable-next-line mocha/no-top-level-hooks
   beforeEach(function() {
+    sinon = sinonjs.createSandbox();
     createStore = options.createStore;
     renew = options.renew;
     sync = options.sync;
@@ -43,8 +45,7 @@ export default function(options) {
 
   // eslint-disable-next-line mocha/no-top-level-hooks
   afterEach(function() {
-    cookieService.read.restore();
-    cookieService.write.restore();
+    sinon.restore();
     store.clear();
   });
 
@@ -63,7 +64,7 @@ export default function(options) {
       expect(cookieService.write).to.have.been.calledWith(
         'test-session',
         JSON.stringify({ key: 'value' }),
-        { domain: null, expires: null, path: '/', secure: false }
+        { domain: null, expires: null, path: '/', sameSite: null, secure: false }
       );
     });
 
@@ -80,7 +81,7 @@ export default function(options) {
       expect(cookieService.write).to.have.been.calledWith(
         'session-cookie-domain',
         JSON.stringify({ key: 'value' }),
-        { domain: 'example.com', expires: null, path: '/', secure: false }
+        { domain: 'example.com', expires: null, path: '/', sameSite: null, secure: false }
       );
     });
 
@@ -98,7 +99,25 @@ export default function(options) {
       expect(cookieService.write).to.have.been.calledWith(
         'session-cookie-domain',
         JSON.stringify({ key: 'value' }),
-        { domain: 'example.com', expires: null, path: '/hello-world', secure: false }
+        { domain: 'example.com', expires: null, path: '/hello-world', sameSite: null, secure: false }
+      );
+    });
+
+    it('respects the configured sameSite', function() {
+      let store;
+      run(() => {
+        store = createStore(cookieService, {
+          cookieName: 'session-cookie-domain',
+          cookieDomain: 'example.com',
+          sameSite: 'Strict'
+        });
+        store.persist({ key: 'value' });
+      });
+
+      expect(cookieService.write).to.have.been.calledWith(
+        'session-cookie-domain',
+        JSON.stringify({ key: 'value' }),
+        { domain: 'example.com', expires: null, path: '/', sameSite: 'Strict', secure: false }
       );
     });
 
@@ -121,13 +140,13 @@ export default function(options) {
   describe('#renew', function() {
     let now = new Date();
 
-    beforeEach(function(done) {
+    beforeEach(async function() {
       store = createStore(cookieService, {
         cookieName:           'test-session',
         cookieExpirationTime: 60
       });
       store.persist({ key: 'value' });
-      renew(store).then(done);
+      await renew(store);
     });
 
     it('stores the expiration time in a cookie named "test-session-expiration_time"', function() {

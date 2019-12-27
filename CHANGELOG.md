@@ -1,6 +1,153 @@
-# 1.7.0
+# Changelog
 
-* The `baseURL` configuration property is now deprecated; use the `rootUrl`
+## v2.1.0 (2019-10-31)
+
+#### :rocket: Enhancement
+* [#1996](https://github.com/simplabs/ember-simple-auth/pull/1996) Deprecate the old testing API ([@marcoow](https://github.com/marcoow))
+* [#1994](https://github.com/simplabs/ember-simple-auth/pull/1994) Deprecate authorize method ([@marcoow](https://github.com/marcoow))
+
+#### :bug: Bug Fix
+* [#1995](https://github.com/simplabs/ember-simple-auth/pull/1995) Fix deprecation until versions ([@marcoow](https://github.com/marcoow))
+
+#### Committers: 2
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+## v2.0.0 (2019-10-29)
+
+#### :boom: Breaking Change
+* [#1956](https://github.com/simplabs/ember-simple-auth/pull/1956) Drop support for Node 6 ([@marcoow](https://github.com/marcoow))
+
+#### :rocket: Enhancement
+* [#1985](https://github.com/simplabs/ember-simple-auth/pull/1985) deprecate rejectWithResponse=false ([@marcoow](https://github.com/marcoow))
+* [#1986](https://github.com/simplabs/ember-simple-auth/pull/1986) Deprecate data adapter mixin elements ([@marcoow](https://github.com/marcoow))
+
+#### :bug: Bug Fix
+* [#1919](https://github.com/simplabs/ember-simple-auth/pull/1919) Don't schedule token refresh checks in FastBoot ([@trek](https://github.com/trek))
+
+#### :memo: Documentation
+* [#1963](https://github.com/simplabs/ember-simple-auth/pull/1963) update current user guide ([@mcfiredrill](https://github.com/mcfiredrill))
+* [#1924](https://github.com/simplabs/ember-simple-auth/pull/1924) Fix outdated guide. ([@ExpDev07](https://github.com/ExpDev07))
+* [#1832](https://github.com/simplabs/ember-simple-auth/pull/1832) Add Octane GitHub guide. ([@muziejus](https://github.com/muziejus))
+
+#### :house: Internal
+* [#1989](https://github.com/simplabs/ember-simple-auth/pull/1989) add missing test environments ([@marcoow](https://github.com/marcoow))
+* [#1917](https://github.com/simplabs/ember-simple-auth/pull/1917) Fix computed property override deprecations ([@josemarluedke](https://github.com/josemarluedke))
+
+#### Committers: 7
+- ExpDev ([@ExpDev07](https://github.com/ExpDev07))
+- Josemar Luedke ([@josemarluedke](https://github.com/josemarluedke))
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- Moacir P. de Sá Pereira ([@muziejus](https://github.com/muziejus))
+- Tony Miller ([@mcfiredrill](https://github.com/mcfiredrill))
+- Trek Glowacki ([@trek](https://github.com/trek))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
+## v1.9.2 (2019-07-18)
+
+#### :rocket: Enhancement
+* [#1900](https://github.com/simplabs/ember-simple-auth/pull/1900) Rename `_router` property to `_authRouter` to avoid conflicts ([@backspace](https://github.com/backspace))
+
+#### :house: Internal
+* [#1902](https://github.com/simplabs/ember-simple-auth/pull/1902) CI: Update npm API key ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 2
+- Buck Doyle ([@backspace](https://github.com/backspace))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
+
+## v1.9.1 (2019-07-12)
+
+#### :house: Internal
+* [#1895](https://github.com/simplabs/ember-simple-auth/pull/1895) CI: Remove `v` prefix from version tag constraint ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 1
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
+
+## v1.9.0 (2019-07-12)
+
+#### :rocket: Enhancement
+* [#1885](https://github.com/simplabs/ember-simple-auth/pull/1885) oauth2-password-grant: Convert `tokenRefreshOffset` to a native getter  ([@Turbo87](https://github.com/Turbo87))
+* [#1886](https://github.com/simplabs/ember-simple-auth/pull/1886) session-stores/cookie: Convert private volatile properties to methods ([@Turbo87](https://github.com/Turbo87))
+
+#### :bug: Bug Fix
+* [#1817](https://github.com/simplabs/ember-simple-auth/pull/1817) Fix "Use of `merge`" deprecation warning in oauth2-password-grant when... ([@arnebit](https://github.com/arnebit))
+
+#### :memo: Documentation
+* [#1894](https://github.com/simplabs/ember-simple-auth/pull/1894) Update Changelog and introduce lerna-changelog ([@Turbo87](https://github.com/Turbo87))
+* [#1887](https://github.com/simplabs/ember-simple-auth/pull/1887) Use async/await when loading current user ([@nbenz](https://github.com/nbenz))
+* [#1870](https://github.com/simplabs/ember-simple-auth/pull/1870) Fix wrong deprecation URL ([@bartocc](https://github.com/bartocc))
+* [#1861](https://github.com/simplabs/ember-simple-auth/pull/1861) Update broken syntax in readme's routes examples ([@kamilogorek](https://github.com/kamilogorek))
+* [#1698](https://github.com/simplabs/ember-simple-auth/pull/1698) Add documentation how to use it with ember-fetch ([@marcoow](https://github.com/marcoow))
+
+#### :house: Internal
+* [#1893](https://github.com/simplabs/ember-simple-auth/pull/1893) yarn: Deduplicate transitive dependencies ([@Turbo87](https://github.com/Turbo87))
+* [#1884](https://github.com/simplabs/ember-simple-auth/pull/1884) Remove unused `mocha-only-detector` dev dependency ([@Turbo87](https://github.com/Turbo87))
+* [#1883](https://github.com/simplabs/ember-simple-auth/pull/1883) Update `ember-data` to v3.10.0 ([@Turbo87](https://github.com/Turbo87))
+* [#1879](https://github.com/simplabs/ember-simple-auth/pull/1879) CI: Use `--no-lockfile` only in "floating dependencies" job ([@Turbo87](https://github.com/Turbo87))
+* [#1878](https://github.com/simplabs/ember-simple-auth/pull/1878) CI: Run deployment job only when a tag is present ([@Turbo87](https://github.com/Turbo87))
+* [#1877](https://github.com/simplabs/ember-simple-auth/pull/1877) Replace `ember-cli-eslint` with regular ESLint ([@Turbo87](https://github.com/Turbo87))
+* [#1876](https://github.com/simplabs/ember-simple-auth/pull/1876) CI: Only run for `master` branch, version tags and PRs ([@Turbo87](https://github.com/Turbo87))
+* [#1875](https://github.com/simplabs/ember-simple-auth/pull/1875) Fix TravisCI builds ([@Turbo87](https://github.com/Turbo87))
+* [#1850](https://github.com/simplabs/ember-simple-auth/pull/1850) Fix CI ([@marcoow](https://github.com/marcoow))
+* [#1787](https://github.com/simplabs/ember-simple-auth/pull/1787) lock jsdom to ^11.10.0 ([@marcoow](https://github.com/marcoow))
+* [#1751](https://github.com/simplabs/ember-simple-auth/pull/1751) Revert "build(travis): fix failing ember-release build step" ([@marcoow](https://github.com/marcoow))
+* [#1752](https://github.com/simplabs/ember-simple-auth/pull/1752) Use Sinon sandbox ([@marcoow](https://github.com/marcoow))
+
+#### Committers: 9
+- Andy Brown ([@geekygrappler](https://github.com/geekygrappler))
+- Erik Kristensen ([@ekristen](https://github.com/ekristen))
+- Jessica Jordan ([@jessica-jordan](https://github.com/jessica-jordan))
+- Julien Palmas ([@bartocc](https://github.com/bartocc))
+- Kamil Ogórek ([@kamilogorek](https://github.com/kamilogorek))
+- Marco Otte-Witte ([@marcoow](https://github.com/marcoow))
+- Nate Benz ([@nbenz](https://github.com/nbenz))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+- [@arnebit](https://github.com/arnebit)
+
+
+## v1.8.2
+
+* Support for [ember-cookies](https://github.com/simplabs/ember-cookies) 0.4.0
+  which clears a deprecation, see #1746.
+
+This release would not have been possible without the contributions by
+[@jessica-jordan](https://github.com/jessica-jordan),
+[@Alonski](https://github.com/Alonski) and
+[@marcoow](https://github.com/marcoow).
+Thanks a lot!
+
+## v1.8.1
+
+* Additional patch fix for deprecation warning for Evented#off method on Ember 3.6+, see #1725
+
+This release would not have been possible without the contributions by
+[@MichalBryxi](https://github.com/MichalBryxi) and [@richard-viney](https://github.com/richard-viney).
+Thanks a lot!
+
+
+## v1.8.0
+
+* Fixes deprecation warning for Evented#off method on Ember 3.6+, see #1722
+* Support for [ember-fetch](https://github.com/ember-cli/ember-fetch) 6.0+, see #1713
+* Fixes error handling for the Torii authenticator, making errors throw as expected
+  if a Promise is rejected, see #1696
+* Updates ember-try test scenarios with Ember 3.0, see [this commit](https://github.com/simplabs/ember-simple-auth/commit/285d36ab2f4e0ae02b677549cec731a5cbaa5cf2)
+
+This release would not have been possible without the contributions by
+[@marcoow](https://github.com/marcoow), [@mike-north](https://github.com/mike-north),
+[@jfschaff](https://github.com/jfschaff), [@geekygrappler](https://github.com/geekygrappler),
+[@quaertym](https://github.com/quaertym), [@runspired](https://github.com/runspired),
+[@kevinansfield](https://github.com/kevinansfield), [@drewchandler](https://github.com/drewchandler),
+[@andreyfel](https://github.com/andreyfel), [@Turbo87](https://github.com/Turbo87),
+[@MichalBryxi](https://github.com/MichalBryxi) and [@richard-viney](https://github.com/richard-viney).
+Thanks a lot! ✨
+
+## v1.7.0
+
+* The `baseURL` configuration property is now deprecated; use the `rootURL`
   property instead, see #1597.
 * ESA works with ember-fetch@"^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0" now, see
   #1608.
@@ -14,7 +161,7 @@
   examples, see #1583, #1591, #1631, #1598.
 * The dummy app now implements remember-me functionality, see #1606.
 
-# 1.6.0
+## v1.6.0
 
 * Authorizers are now deprecated, see #1532. For more information on the
   deprecation, refer to the
@@ -29,14 +176,14 @@
 * Usage of the private `beginPropertyChanges`/`endPropertyChanges` methods has
   been removed, see #1554.
 
-# 1.5.1
+## v1.5.1
 
 * Session restoration is now setup in an initializer (vs. an instance
   initializer), see #1547.
 * The new acceptance test helpers introduced with 1.5.0 no longer need to
   manually set up the router (which was using private API), see #1548.
 
-# 1.5.0
+## v1.5.0
 
 * The acceptance test helpers no longer rely on the global `wait` test helper,
   see #1516.
@@ -46,14 +193,14 @@
 * The `ember-cookies` dependency now allows `^0.1.0` as well as `^0.2.0`, see
   #1538.
 
-# 1.4.2
+## v1.4.2
 
 * The broken `warn()` method on the `cookie` session store has been fixed,
   see #1502.
 * The event listener on the `local-storage` session store is correctly removed,
   see #1498.
 
-# 1.4.1
+## v1.4.1
 
 * The `fastboot-app-server` dependency has been removed, see #1446.
 * The `torii` authenticator will no longer override the session data with the
@@ -68,14 +215,14 @@
 * The cookie that stores the session cookie's expiration time is now cleared
   when that time is set to `null`, see #1463.
 
-# 1.4.0
+## v1.4.0
 
 * A new session store has been added that is based on `sessionStorage`, see
   #1392.
 * Several documentation errors and typos have been fixed, see #1393, #1372,
   #1374, #1366, #1346.
 
-# 1.3.0
+## v1.3.0
 
 * ESA now uses ember-fetch instead of ember-network. ember-fetch is better
   maintained than ember-network and seems to emerge as the
@@ -91,7 +238,7 @@
   responses while still being able to call `_super` to invoke the base
   authenticator's logic; see #1290.
 
-# 1.2.2
+## v1.2.2
 
 * The session is now correctly restored when running Ember 2.13, see #1267.
 * The mechanism that triggers authentication in the `AuthenticatedRouteMixin`
@@ -99,7 +246,7 @@
   #1278.
 * The ember-cookies dependency has been upgraded to 0.0.13, see #1281.
 
-# 1.2.1
+## v1.2.1
 
 * Arguments passed to the session service's `invalidate` method will now be
   passed on to the authenticator's `invalidate` method along with the session
@@ -119,7 +266,7 @@
   the expiration time cookie if present, see #1257.
 * Some parts of the documentation have been improved, see #1253, #1259, #1254.
 
-# 1.2.0
+## v1.2.0
 
 * The [deprecated `bind` method from jQuery](http://api.jquery.com/bind/) has
   been replaced with `on`, see #1184.
@@ -127,7 +274,7 @@
   been removed, see #1182, #1161, #1183.
 * JSHint has been replaced with ESLint, see #1185, #1186.
 
-# 1.2.0-beta.2
+## v1.2.0-beta.2
 
 * The `getOwner` function is now read from the `Ember` object instead of
   importing it from `ember-getowner-polyfill` which fixes a deprecation, see
@@ -152,7 +299,7 @@
   implementing authentication with github has been added, see #1143, #1142,
   #1121, #1139.
 
-# 1.2.0-beta.1
+## v1.2.0-beta.1
 
 * Ember Simple Auth now supports FastBoot out-of-the-box (when using the cookie
   session store), see #1035.
@@ -176,16 +323,16 @@
 * The default cookie names that the cookie session store uses are now compliant
   with RFC 2616, see #978.
 
-# 1.1.0
+## v1.1.0
 
 There were no changes since 1.1.0-beta.5.
 
-# 1.1.0-beta.5
+## v1.1.0-beta.5
 
 * The session will now ignore session store events when it is currently
   authenticating or restoring, see #965.
 
-# 1.1.0-beta.4
+## v1.1.0-beta.4
 
 * A critical bug in the cookie store causing an immediate logout after logging
   in has been fixed, see #931.
@@ -195,7 +342,7 @@ There were no changes since 1.1.0-beta.5.
 * The README, API docs and contribution guidelines have been improved, see
   #954, #947.
 
-# 1.1.0-beta.3
+## v1.1.0-beta.3
 
 * The `ember-cli-is-package-missing` package was added as a dependency
   (previously it was only a dev dependency), fixing a bug that occurred when
@@ -206,7 +353,7 @@ There were no changes since 1.1.0-beta.5.
   on `on('init', …` which results in easier to understand and maintain code,
   see #917.
 
-# 1.1.0-beta.2
+## v1.1.0-beta.2
 
 * The `silent-error` package was added as a dependency (previously it was only
   a dev dependency), fixing a bug that occurred when running the new
@@ -216,7 +363,7 @@ There were no changes since 1.1.0-beta.5.
   of Babel in order to make the code more concise and easier to maintain, see
   #905.
 
-# 1.1.0-beta.1
+## v1.1.0-beta.1
 
 * Session Stores are now asynchronous. Synchronous session stores will still
   work but are now deprecated and will be removed in Ember Simple Auth 2.0, see
@@ -240,7 +387,7 @@ There were no changes since 1.1.0-beta.5.
 * The `DataAdapterMixin` will now only invalidate the session on 401 responses
   when it is actually currently authenticated, see #722.
 
-# 1.0.1
+## v1.0.1
 
 * A bug in the mechanism that forwards events from the internal session through
   the session service was fixed, see #736, #730.
@@ -248,7 +395,7 @@ There were no changes since 1.1.0-beta.5.
   see #734, #735.
 * A typo in the documentation was fixed, see #738.
 
-# 1.0.0
+## v1.0.0
 
 __Ember Simple Auth 1.0.0 changes a lot of external API, a large part of these
 changes being breaking changes.__ Because of that this changelog entry does not
@@ -285,11 +432,11 @@ has changed.
 * The session is now restored in the application route's `beforeModel` method
   instead of in an initializer.
 
-# 0.8.0
+## v0.8.0
 
 * Correctly initialize the session's `content`, see #556.
 
-# 0.8.0-beta.3
+## v0.8.0-beta.3
 
 * Fixed a bug related to the mechanism for automatic translation of session
   events to route actions leaking state, see #544.
@@ -299,7 +446,7 @@ has changed.
   anymore as that's already set by the container itself when creating the
   object, see #520.
 
-# 0.8.0-beta.2
+## v0.8.0-beta.2
 
 * Ember Simple Auth now uses the application's `register` and `inject` methods
   instead of the container's, see #462.
@@ -310,7 +457,7 @@ has changed.
 * Better implementation for detection of changes in the session store, see
   #469.
 
-# 0.8.0-beta.1
+## v0.8.0-beta.1
 
 * __[BREAKING]__ The devise package's `identificationAttributeName` property
   now defaults to `email`, see #456.
@@ -330,7 +477,7 @@ has changed.
 * The `AuthenticatedRouteMixin` mixin will now correctly return upstream
   `beforeModel` promises, see #464.
 
-# 0.7.3
+## v0.7.3
 
 * __[BREAKING]__ The name of the token attribute used by the devise
   authenticator and authorizer is now `token` by default, see #394.
@@ -348,7 +495,7 @@ has changed.
 * The template for the API docs was updated so that it works with the newest
   handlebars version.
 
-# 0.7.2
+## v0.7.2
 
 * The session's `authenticate` method now accepts an arbitrary list of
   arguments to pass to the authenticator's `authenticate` method which also
@@ -363,13 +510,13 @@ has changed.
 * Fixed clearing of cookie and `localStorage` stores, see #349.
 * The `ajaxPrefilter` and `ajaxError` handlers were cleaned up.
 
-# 0.7.1
+## v0.7.1
 
 * The `localStorage` session store now correctly reads its configuration from
   the `Configuration` object and in turn can be configured in
   `config/environment.js` in Ember CLI projects, see #340.
 
-# 0.7.0
+## v0.7.0
 
 * __[BREAKING]__: The Devise authorizer now sends the session token as
   `user_token` instead of `token` for consistency.
@@ -389,7 +536,7 @@ has changed.
 * The global `ajaxPrefilter` and `ajaxError` hooks will now be setup only once
   which fixes some problems in testing mode.
 
-# 0.6.7
+## v0.6.7
 
 * The Ember CLI Addons will now use the project's configuration as defined in
   `config/environment.js` and do not depend on `window.ENV` anymore, see
@@ -397,12 +544,12 @@ has changed.
 * All configuration data is now held in configuration objects for the
   OAuth 2.0, cookie store and devise extension libraries as well.
 
-# 0.6.6
+## v0.6.6
 
 This release fixes the Ember CLI Addon packages that were (again) published
 incorrectly to npm...
 
-# 0.6.5
+## v0.6.5
 
 * __[BREAKING]__: The OAuth 2.0 authenticator's `serverTokenRevocationEndpoint`
   property has been renamed to `serverTokenRevocationEndpoint`
@@ -422,7 +569,7 @@ incorrectly to npm...
 * Fixed a bug that prevented the browserified version from being used in older
   versions of Internet Explorer, see #266.
 
-# 0.6.4
+## v0.6.4
 
 * __The new package `ember-simple-auth-testing` was added that contains test
   helpers__ that simplify testing of authenticated routes, e.g.:
@@ -510,7 +657,7 @@ incorrectly to npm...
 * Fixed a bug where the OAuth 1.0 authenticator would not try to refresh the
   token on restore in some situations, see #249.
 
-# 0.6.3
+## v0.6.3
 
 * added new extension library
   [Ember Simple Auth Torii](https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-torii)
@@ -522,12 +669,12 @@ incorrectly to npm...
 * All standard Ember methods that are defined in the mixins will now call
   `this._super`, see #232.
 
-# 0.6.2
+## v0.6.2
 
 * The `crossOriginWhitelist` is now loaded from `window.ENV` correctly, see
   #218.
 
-# 0.6.1
+## v0.6.1
 
 * __[BREAKING] All factory properties that previously had a "Factory" suffix
   have been renamed to not include the suffix anymore__. If you're currently
@@ -537,7 +684,7 @@ incorrectly to npm...
 * The file names of the download distribution have been changed to have the
   "ember-" prefix again.
 
-# 0.6.0
+## v0.6.0
 
 * __[BREAKING]__ Ember Simple Auth's `SimpleAuth` object is no longer attached
   to the `Ember` global but is now a global itself (in the browserified
@@ -575,7 +722,7 @@ incorrectly to npm...
 * The cookie store example now implements "remember me" functionality.
 * There is a new example that uses the AMD distribution.
 
-# 0.5.3
+## v0.5.3
 
 * fixed the AMD build so it does not depend on the Ember.SimpleAuth global, see
   #183.
@@ -583,19 +730,19 @@ incorrectly to npm...
 * Cleaned up the AMD structure so it can better be used with ember-cli, see
   #189 (all files export the default export now).
 
-# 0.5.2
+## v0.5.2
 
 * The `ApplicationRouteMixin` now uses the configured session property name,
   see #184.
 * The `ApplicationRouteMixin` will not try to invalidate a session that is not
   authenticated and thus cannot be invalidated, see #185.
 
-# 0.5.1
+## v0.5.1
 
 * The OAuth 2.0 authenticator does not schedule automatic token refreshs in the
   test environment anymore, see #181.
 
-# 0.5.0
+## v0.5.0
 
 * __Using any of the mixins is now completely optional__; Ember Simple Auth
   will work without the mixins as well (see example 9).
@@ -609,7 +756,7 @@ incorrectly to npm...
 * The API docs now include the events an object might trigger.
 * The tests now run with the latest Ember and jQuery versions.
 
-# 0.4.0
+## v0.4.0
 
 * __[BREAKING]__ Ember Simple Auth's factories are now registered with
   "namespaced" names with Ember's container to avoid conflicts, see #159;
@@ -628,12 +775,12 @@ incorrectly to npm...
 * improved the instructions for server side setup for ember-simple-auth-devise,
   see #155
 
-# 0.3.1
+## v0.3.1
 
 * Fixed a bug where the arguments from session events were not passed to router
   actions.
 
-# 0.3.0
+## v0.3.0
 
 * Ember Simple Auth has been split up into a base library and a set of
   extension libraries - the OAuth 2.0 authenticator/authorizer, the cookie
@@ -663,7 +810,7 @@ incorrectly to npm...
 * the OAuth 2.0 authenticator will now try to refresh an expired token on
   refresh and only reject when that fails, see #102
 
-# 0.2.1
+## v0.2.1
 
 * removed check for identification and password being present in
   `LoginControllerMixin` so an error is triggered with the server's response
@@ -671,7 +818,7 @@ incorrectly to npm...
 * README improvements
 * improved examples
 
-# 0.2.0
+## v0.2.0
 
 * Ember Simple Auth now reloads the application's root page on logout so all
   sensitive in-memory data etc. gets cleared - this also works across tabs now,
@@ -684,11 +831,11 @@ incorrectly to npm...
 * added warnings when credentials/tokens etc. are transmitted via insecure
   connections (HTTP)
 
-# 0.1.3
+## v0.1.3
 
 * fixed synchronization of stores, see #91
 
-# 0.1.2
+## v0.1.2
 
 * `Ember.SimpleAuth.setup` now **expects the container and the application as
   arguments** (`Ember.SimpleAuth.setup(container, application);`)
@@ -699,14 +846,14 @@ incorrectly to npm...
   starting
 * origin validation now works in IE, see #84
 
-# 0.1.1
+## v0.1.1
 
 * use absolute expiration times for tokens, see #76
 * fix for cross origin check in IE, see #72
 * make sure errors bubble up, see #79
 * added documentation for customizing/extending the library
 
-# 0.1.0
+## v0.1.0
 
 The Big Rewrite™, see the
 [README](https://github.com/simplabs/ember-simple-auth#readme) and the
@@ -725,40 +872,40 @@ The main changes are:
 * OAuth 2.0 client authentication was removed from the default library as it
   does not really work for public clients
 
-# 0.0.11
+## v0.0.11
 
 * fixed cross origin check for Firefox (which doesn't implement
   location.origin), see #41
 
-# 0.0.10
+## v0.0.10
 
 * fixed problem that broke integration tests, see #38 and #39
 
-# 0.0.9
+## v0.0.9
 
 * don't periodically refresh data stored in cookie in testing mode, see #35
 * support for client id and client secret, see, #36
 
-# 0.0.8
+## v0.0.8
 
 * clear password on login, see #29
 * fixed prevention of sending `Authorization` header with cross-origin requests
 * added Ember.SimpleAuth.crossOriginWhitelist to also sent `Authorization`
   header with configured cross-origin requests
 
-# 0.0.7
+## v0.0.7
 
 * use session cookies to store the session properties (see #30)
 
-# 0.0.6
+## v0.0.6
 
 * added API docs
 
-# 0.0.5
+## v0.0.5
 
 * fixed #21
 
-# 0.0.4
+## v0.0.4
 
 * made the library compliant to RFC 6749
 * added the application route mixin with `login`, `logout`, `loginSucceeded`,
@@ -767,15 +914,15 @@ The main changes are:
 * more examples
 * added automatic token refreshing
 
-# 0.0.3
+## v0.0.3
 
 * changed header to standard `Authorization` instead of the custom header, see
   #15
 
-# 0.0.2
+## v0.0.2
 
 * fixed content type of `POST /session` request to be application/json, see #13
 
-# 0.0.1
+## v0.0.1
 
 initial release

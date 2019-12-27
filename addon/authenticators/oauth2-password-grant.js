@@ -1,7 +1,6 @@
 import RSVP from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
-import { computed } from '@ember/object';
 import { A, makeArray } from '@ember/array';
 import { warn } from '@ember/debug';
 import {
@@ -12,6 +11,7 @@ import {
 import Ember from 'ember';
 import BaseAuthenticator from './base';
 import fetch from 'fetch';
+import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 
 const assign = emberAssign || merge;
 const keys = Object.keys || emberKeys; // Ember.keys deprecated in 1.13
@@ -106,57 +106,14 @@ export default BaseAuthenticator.extend({
     @default a random number between 5 and 10
     @public
   */
-  tokenRefreshOffset: computed(function() {
+  get tokenRefreshOffset() {
     const min = 5;
     const max = 10;
 
     return (Math.floor(Math.random() * (max - min)) + min) * 1000;
-  }).volatile(),
+  },
 
   _refreshTokenTimeout: null,
-
-  _clientIdHeader: computed('clientId', function() {
-    const clientId = this.get('clientId');
-
-    if (!isEmpty(clientId)) {
-      const base64ClientId = window.base64.encode(clientId.concat(':'));
-      return { Authorization: `Basic ${base64ClientId}` };
-    }
-  }),
-
-  /**
-    When authentication fails, the rejection callback is provided with the whole
-    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
-    instead of its responseJSON or responseText.
-
-    This is useful for cases when the backend provides additional context not
-    available in the response body.
-
-    @property rejectWithXhr
-    @type Boolean
-    @default false
-    @deprecated OAuth2PasswordGrantAuthenticator/rejectWithResponse:property
-    @public
-  */
-  rejectWithXhr: computed.deprecatingAlias('rejectWithResponse', {
-    id: `ember-simple-auth.authenticator.reject-with-xhr`,
-    until: '2.0.0'
-  }),
-
-  /**
-    When authentication fails, the rejection callback is provided with the whole
-    Fetch API [Response](https://fetch.spec.whatwg.org/#response-class) object
-    instead of its responseJSON or responseText.
-
-    This is useful for cases when the backend provides additional context not
-    available in the response body.
-
-    @property rejectWithResponse
-    @type Boolean
-    @default false
-    @public
-  */
-  rejectWithResponse: false,
 
   /**
     Restores the session from a session data object; __will return a resolving
@@ -256,7 +213,7 @@ export default BaseAuthenticator.extend({
     return new RSVP.Promise((resolve, reject) => {
       const data = { 'grant_type': 'password', username: identification, password };
       const serverTokenEndpoint = this.get('serverTokenEndpoint');
-      const useResponse = this.get('rejectWithResponse');
+
       const scopesString = makeArray(scope).join(' ');
       if (!isEmpty(scopesString)) {
         data.scope = scopesString;
@@ -276,7 +233,7 @@ export default BaseAuthenticator.extend({
           resolve(response);
         });
       }, (response) => {
-        run(null, reject, useResponse ? response : (response.responseJSON || response.responseText));
+        run(null, reject, response);
       });
     });
   },
@@ -336,6 +293,11 @@ export default BaseAuthenticator.extend({
   makeRequest(url, data, headers = {}) {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
+    const clientId = this.get('clientId');
+    if (!isEmpty(clientId)) {
+      data['client_id'] = this.get('clientId');
+    }
+
     const body = keys(data).map((key) => {
       return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`;
     }).join('&');
@@ -345,11 +307,6 @@ export default BaseAuthenticator.extend({
       headers,
       method: 'POST'
     };
-
-    const clientIdHeader = this.get('_clientIdHeader');
-    if (!isEmpty(clientIdHeader)) {
-      merge(options.headers, clientIdHeader);
-    }
 
     return new RSVP.Promise((resolve, reject) => {
       fetch(url, options).then((response) => {
@@ -372,7 +329,7 @@ export default BaseAuthenticator.extend({
   },
 
   _scheduleAccessTokenRefresh(expiresIn, expiresAt, refreshToken) {
-    const refreshAccessTokens = this.get('refreshAccessTokens');
+    const refreshAccessTokens = this.get('refreshAccessTokens') && !isFastBoot();
     if (refreshAccessTokens) {
       const now = (new Date()).getTime();
       if (isEmpty(expiresAt) && !isEmpty(expiresIn)) {

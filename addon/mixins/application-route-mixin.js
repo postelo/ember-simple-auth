@@ -1,6 +1,5 @@
 import Mixin from '@ember/object/mixin';
 import { A } from '@ember/array';
-import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
 import { inject } from '@ember/service';
 import Ember from 'ember';
@@ -66,9 +65,7 @@ export default Mixin.create({
     @default 'index'
     @public
   */
-  routeAfterAuthentication: computed(function() {
-    return Configuration.routeAfterAuthentication;
-  }),
+  routeAfterAuthentication: 'index',
 
   init() {
     this._super(...arguments);
@@ -93,7 +90,7 @@ export default Mixin.create({
     it. If there is no such transition, the `ember_simple_auth-redirectTarget`
     cookie will be checked for a url that represents an attemptedTransition
     that was aborted in Fastboot mode, otherwise this action transitions to the
-    {{#crossLink "Configuration/routeAfterAuthentication:property"}}{{/crossLink}}.
+    {{#crossLink "AuthenticatedRouteMixin/routeAfterAuthentication:property"}}{{/crossLink}}.
 
 
     @method sessionAuthenticated
@@ -135,8 +132,12 @@ export default Mixin.create({
       if (this.get('_isFastBoot')) {
         this.transitionTo(Configuration.rootURL);
       } else {
-        window.location.replace(Configuration.rootURL);
+        this._refresh();
       }
     }
+  },
+
+  _refresh() {
+    window.location.replace(Configuration.rootURL);
   }
 });

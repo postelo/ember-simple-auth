@@ -12,7 +12,7 @@ module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
     storeConfigInMeta: true,
     'ember-bootstrap': {
-      bootstrapVersion: 3,
+      bootstrapVersion: 4,
       importBootstrapFont: false,
       importBootstrapCSS: true
     },
@@ -22,6 +22,9 @@ module.exports = function(defaults) {
     sourcemaps: {
       enabled: true,
       extensions: ['js']
+    },
+    'ember-cli-babel': {
+      includePolyfill: true
     }
   });
 

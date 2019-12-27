@@ -1,14 +1,11 @@
 import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
-import { assert } from '@ember/debug';
-import { isPresent } from '@ember/utils';
 
 /**
   __This mixin can be used to make Ember Data adapters authorize all outgoing
-  API requests by injecting a header.__ It works with all authorizers that call
-  the authorization callback (see
-  {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) with header
-  name and header content arguments.
+  API requests by injecting a header.__ The adapter's `headers` property can be
+  set using data read from the `session` service that is injected by this
+  mixin.
 
   __The `DataAdapterMixin` will also invalidate the session whenever it
   receives a 401 response for an API request.__
@@ -19,7 +16,14 @@ import { isPresent } from '@ember/utils';
   import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
   export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
-    authorizer: 'authorizer:application'
+    headers: computed('session.data.authenticated.token', function() {
+      let headers = {};
+      if (this.session.isAuthenticated) {
+        headers['Authorization'] = `Bearer ${this.session.data.authenticated.token}`;
+      }
+
+      return headers;
+    })
   });
   ```
 
@@ -41,88 +45,6 @@ export default Mixin.create({
     @public
   */
   session: service('session'),
-
-  /**
-    The authorizer that is used to authorize API requests. The authorizer has
-    to call the authorization callback (see
-    {{#crossLink "BaseAuthorizer/authorize:method"}}{{/crossLink}}) with header
-    name and header content arguments. __This property must be overridden in
-    adapters using this mixin.__
-
-    @property authorizer
-    @type String
-    @default null
-    @public
-  */
-  authorizer: null,
-
-  /**
-    Defines a `beforeSend` hook (see http://api.jquery.com/jQuery.ajax/) that
-    injects a request header containing the authorization data as constructed
-    by the {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}}
-    (see
-    {{#crossLink "SessionService/authorize:method"}}{{/crossLink}}). The
-    specific header name and contents depend on the actual authorizer that is
-    used.
-
-    Until [emberjs/rfcs#171](https://github.com/emberjs/rfcs/pull/171)
-    gets resolved and [ds-improved-ajax](https://github.com/emberjs/data/pull/3099)
-    [feature flag](https://github.com/emberjs/data/blob/master/FEATURES.md#feature-flags)
-    is enabled, this method will be called for **every** ember-data version.
-    `headersForRequest` *should* replace it after the resolution of the RFC.
-
-    @method ajaxOptions
-    @protected
-  */
-  ajaxOptions() {
-    let hash = this._super(...arguments);
-    let { beforeSend } = hash;
-
-    hash.beforeSend = xhr => {
-      if (this.get('authorizer')) {
-        const authorizer = this.get('authorizer');
-        this.get('session').authorize(authorizer, (headerName, headerValue) => {
-          xhr.setRequestHeader(headerName, headerValue);
-        });
-      } else {
-        this.authorize(xhr);
-      }
-
-      if (beforeSend) {
-        beforeSend(xhr);
-      }
-    };
-    return hash;
-  },
-
-  authorize() {
-    assert('The `authorize` method should be overridden in your application adapter. It should accept a single argument, the request object.');
-  },
-
-  /**
-    Adds request headers containing the authorization data as constructed
-    by the {{#crossLink "DataAdapterMixin/authorizer:property"}}{{/crossLink}}.
-
-    Until [emberjs/rfcs#171](https://github.com/emberjs/rfcs/pull/171)
-    gets resolved and [ds-improved-ajax](https://github.com/emberjs/data/pull/3099)
-    [feature flag](https://github.com/emberjs/data/blob/master/FEATURES.md#feature-flags)
-    is enabled, this method will **not** be used.
-    See `ajaxOptions` instead.
-
-    @method headersForRequest
-    @protected
-   */
-  headersForRequest() {
-    const authorizer = this.get('authorizer');
-    assert("You're using the DataAdapterMixin without specifying an authorizer. Please add `authorizer: 'authorizer:application'` to your adapter.", isPresent(authorizer));
-
-    let headers = this._super(...arguments);
-    headers = Object(headers);
-    this.get('session').authorize(authorizer, (headerName, headerValue) => {
-      headers[headerName] = headerValue;
-    });
-    return headers;
-  },
 
   /**
     This method is called for every response that the adapter receives from the
